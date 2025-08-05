@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MMRRC | Mutant Mouse Resource & Research Centers</title>
+  <meta name="description" content="MMRRC is the NIH-supported national repository for mutant mouse models. Order a model, submit a strain, and learn about NAMs through a whole‑organism lens.">
+  <style>
+    /* =========================================================
+       MMRRC Landing Page — White-first, Accessible, Responsive
+       - White theme with teal/orange accents (mmrrc.org)
+       - Prominent site-wide search ("Amazon-like")
+       - Accessible modal for Contact
+       - Mobile-first, semantic, high contrast
+       ========================================================= */
+
+    :root{
+      /* Brand */
+      --teal: #0f9aa6;          /* teal brand */
+      --teal-600: #0b7a83;
+      --teal-50: #e6f5f6;
+      --orange: #f59e0b;        /* accent orange */
+      --orange-600: #d97706;
+
+      /* Base palette */
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f6f7f9;     /* light gray sections */
+      --border: #e5e7eb;        /* neutral border */
+      --shadow: 0 6px 20px rgba(0,0,0,.08);
+
+      --text: #0b1220;          /* near-black */
+      --muted: #4b5563;         /* gray-600 */
+
+      /* Buttons */
+      --cta-order: #0ea5a8;     /* teal button */
+      --cta-submit: #fb923c;    /* orange button */
+      --error: #dc2626;
+
+      /* Rhythm */
+      --radius: 12px;
+      --space: clamp(14px, 2vw, 20px);
+      --space-lg: clamp(22px, 4vw, 48px);
+      --space-xl: clamp(32px, 8vw, 84px);
+      --maxw: 1200px;
+
+      /* Type scale */
+      --step--1: clamp(12px, .85rem + .2vw, 14px);
+      --step-0: clamp(14px, .95rem + .3vw, 16px);
+      --step-1: clamp(18px, 1.05rem + .5vw, 20px);
+      --step-2: clamp(22px, 1.2rem + .8vw, 26px);
+      --step-3: clamp(28px, 1.4rem + 1.2vw, 34px);
+      --step-4: clamp(34px, 1.6rem + 1.8vw, 44px);
+    }
+
+    /* Base / Reset */
+    * { box-sizing: border-box; }
+    html:focus-within { scroll-behavior: smooth; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: var(--step-0);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    img{ max-width:100%; height:auto; }
+    a{ color: var(--teal-600); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover{ opacity:.9; }
+    :focus{ outline: none; }
+    :focus-visible{
+      outline: 3px solid #1fb6c1;
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
+    /* Skip link */
+    .skip-link{
+      position: absolute; left:-999px; top:-999px;
+    }
+    .skip-link:focus{
+      left: 12px; top: 12px;
+      background: #fff; color: #000;
+      padding: 10px 14px; border-radius: 6px;
+      box-shadow: var(--shadow); z-index: 9999; text-decoration: none;
+    }
+
+    /* Layout helpers */
+    .wrap{
+      width: min(100% - 2rem, var(--maxw));
+      margin-inline: auto;
+    }
+
+    /* Header with primary nav and account/cta side */
+    header{
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.9);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 12px; padding: .7rem 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:.8rem; text-decoration:none;
+    }
+    .brand-mark{
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--teal), #27c3cf);
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,.06), var(--shadow);
+    }
+    .brand-title{
+      font-weight: 800; letter-spacing:.2px; font-size: var(--step-1);
+      color: var(--text); text-decoration: none;
+    }
+
+    nav[aria-label="Primary"] ul{
+      display:flex; gap: 6px; list-style:none; margin:0; padding:0;
+      align-items:center; flex-wrap: wrap;
+    }
+    .nav-left a{
+      display:inline-block; padding: 8px 12px; border-radius: 999px;
+      text-decoration:none; color: var(--text);
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .nav-left a:hover{ background: var(--surface-2); }
+    .nav-right a{
+      display:inline-block; padding: 8px 12px; border-radius: 10px;
+      text-decoration:none; color: #fff;
+      background: var(--teal); border: 1px solid rgba(0,0,0,.05);
+    }
+    .nav-right a:hover{ background: var(--teal-600); }
+    .nav-right .secondary{
+      background: #fff; color: var(--text); border-color: var(--border);
+    }
+    .nav-right .secondary:hover{ background: var(--surface-2); }
+
+    /* Prominent search section ("Amazon-like") */
+    .searchbar-wrap{
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .searchbar{
+      display: grid; gap: 10px; padding: 10px 0;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px){
+      .searchbar{ grid-template-columns: 180px 1fr 130px; align-items: center; }
+    }
+    .select, .input, .search-btn{
+      height: 46px; border-radius: 999px; border: 1px solid var(--border);
+      background:#fff;
+    }
+    .select{
+      padding: 0 14px; color: var(--text); font-weight: 600;
+    }
+    .input{
+      padding: 0 14px; display:flex; align-items:center; gap:8px;
+      border-left: none; border-right: none; border-radius: 999px;
+      box-shadow: inset 0 1px 0 rgba(0,0,0,.03);
+    }
+    .input input{
+      border: none; outline: none; width: 100%; font: inherit; color: var(--text);
+    }
+    .search-btn{
+      background: var(--orange); color:#fff; font-weight: 800; cursor:pointer;
+      border: none; box-shadow: var(--shadow);
+    }
+    .search-btn:hover{ background: var(--orange-600); }
+
+    /* Hero */
+    .hero{
+      padding: var(--space-xl) 0 var(--space-lg);
+      background: var(--surface);
+    }
+    .hero-grid{
+      display:grid; gap: var(--space-lg);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px){
+      .hero-grid{ grid-template-columns: 1.1fr .9fr; align-items: center; }
+    }
+    .kicker{
+      display:inline-flex; align-items:center; gap:8px; color: var(--muted);
+      font-size: var(--step--1); letter-spacing:.3px; text-transform: uppercase;
+    }
+    .kicker .dot{
+      display:inline-block; width:8px; height:8px; border-radius:50%; background: var(--teal);
+      box-shadow: 0 0 0 4px rgba(15,154,166,.18);
+    }
+    .hero h1{
+      margin: .35em 0 .2em; font-size: var(--step-4); line-height: 1.1; letter-spacing: .2px;
+      color: #0a0f1a;
+    }
+    .hero p{
+      color: var(--muted); max-width: 68ch; font-size: var(--step-1); margin: 0 0 var(--space);
+    }
+    .cta-row{ display:flex; flex-wrap: wrap; gap: 12px; }
+    .btn{
+      appearance:none; border:none; cursor:pointer; font:inherit;
+      padding: 14px 18px; border-radius: 12px; text-decoration:none; font-weight: 800;
+      transition: transform .06s ease, filter .2s ease; box-shadow: var(--shadow);
+    }
+    .btn:hover{ filter: brightness(1.02); transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0); }
+    .btn-order{ background: linear-gradient(180deg, var(--cta-order), #0b8f92); color: #ffffff; }
+    .btn-submit{ background: linear-gradient(180deg, var(--cta-submit), #f97316); color: #ffffff; }
+    .btn-secondary{
+      background: #fff; color: var(--text); border: 1px solid var(--border);
+    }
+
+    /* Figure placeholder */
+    .figure-card{
+      border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border);
+      background: linear-gradient(180deg, #ffffff, #f9fafb);
+      min-height: 260px; display:flex; align-items:center; justify-content:center; box-shadow: var(--shadow);
+      position: relative;
+    }
+    .figure-card figcaption{
+      position:absolute; bottom: 10px; left: 12px;
+      font-size: var(--step--1); color: #0b1220; background: rgba(255,255,255,.9);
+      padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border);
+      -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    }
+
+    /* Collapsible NAM highlight (reduced prominence) */
+    .feature{ padding: var(--space-lg) 0; }
+    .nam-card{
+      border-radius: var(--radius); border: 1px solid var(--border); background: #fff;
+      padding: clamp(14px, 3vw, 20px); box-shadow: var(--shadow);
+    }
+    details.nam{
+      border-radius: var(--radius); border: 1px dashed var(--border); background: var(--surface-2);
+    }
+    details.nam[open]{ background: #fff; border-style: solid; }
+    details.nam summary{
+      list-style: none; cursor: pointer; padding: 14px 16px; display:flex; align-items:center; gap:10px;
+      font-weight: 700; color: #0b1220;
+    }
+    details.nam summary::-webkit-details-marker{ display:none; }
+    .badge{
+      display:inline-block; font-size: var(--step--1); color:#0b1220; background: var(--teal-50);
+      border: 1px solid #bee8eb; padding: 2px 8px; border-radius: 999px;
+    }
+    .nam-body{ padding: 0 16px 16px; color: var(--muted); }
+    .learn-link{ display:inline-block; margin-top: 8px; }
+
+    /* Sales-forward category tiles/cards */
+    .tiles{ padding: var(--space-lg) 0 var(--space-xl); background: var(--surface-2); }
+    .cards{
+      display:grid; gap: var(--space); grid-template-columns: 1fr;
+    }
+    @media (min-width: 760px){
+      .cards{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+    }
+    .card{
+      border-radius: 14px; border: 1px solid var(--border); background: #fff; padding: 18px;
+      min-height: 100%; display:flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow);
+    }
+    .icon{
+      width: 42px; height: 42px; border-radius: 10px; display:grid; place-items:center;
+      color: #0b1220; font-weight: 900; background: linear-gradient(180deg, #e6f5f6, #c7ecef);
+      border: 1px solid #bfe5e8;
+    }
+    .card h3{ font-size: var(--step-1); margin: 6px 0 0; color:#0b1220; }
+    .card p{ color: var(--muted); margin: 0; }
+    .card .more{
+      margin-top: auto; align-self: start; text-decoration: none; border: 1px solid var(--border);
+      padding: 8px 10px; border-radius: 10px; color: var(--text); background:#fff;
+    }
+    .card .more:hover{ background: var(--surface-2); }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid var(--border); background: #fff; color: var(--muted); padding: var(--space-lg) 0;
+    }
+    .footgrid{ display:grid; gap: var(--space); grid-template-columns: 1fr; }
+    @media (min-width: 900px){ .footgrid{ grid-template-columns: 1.2fr .8fr; } }
+    .small{ font-size: var(--step--1); }
+
+    /* Modal (Contact) */
+    .modal-backdrop{
+      position: fixed; inset:0; background: rgba(0,0,0,.45); display:none; align-items:center; justify-content:center;
+    }
+    .modal-backdrop[aria-hidden="false"]{ display:flex; }
+    .modal{
+      width: min(94vw, 720px); background:#fff; border-radius: 16px; box-shadow: 0 30px 80px rgba(0,0,0,.25);
+      border: 1px solid var(--border);
+    }
+    .modal header{
+      position: static; -webkit-backdrop-filter:none; backdrop-filter:none; border-bottom: 1px solid var(--border);
+      padding: 14px 18px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .modal h2{ margin:0; font-size: var(--step-2); }
+    .modal .close-btn{
+      appearance:none; border:none; background:#fff; border:1px solid var(--border); border-radius: 8px;
+      padding: 6px 10px; cursor:pointer;
+    }
+    .modal .body{ padding: 18px; display:grid; gap: 12px; }
+    .form-row{ display:grid; gap:10px; grid-template-columns: 1fr; }
+    @media (min-width:600px){ .form-row{ grid-template-columns: 1fr 1fr; } }
+    .field{
+      display:flex; flex-direction: column; gap: 6px;
+    }
+    .field input, .field textarea{
+      border:1px solid var(--border); border-radius: 10px; padding: 10px 12px; font: inherit;
+    }
+    .field textarea{ min-height: 120px; resize: vertical; }
+    .consent{ display:flex; gap:10px; align-items:flex-start; }
+    .submit-btn{
+      background: var(--teal); color:#fff; border:none; border-radius: 10px; padding: 12px 16px; font-weight: 800; cursor:pointer;
+      width: fit-content; box-shadow: var(--shadow);
+    }
+    .submit-btn:hover{ background: var(--teal-600); }
+    .contact-info{
+      border-top: 1px solid var(--border); padding-top: 12px; color: var(--muted);
+    }
+
+    /* Print */
+    @media print{
+      header, .cta-row .btn, .figure-card::after, .searchbar-wrap, .tiles, .modal-backdrop { display:none !important; }
+      body{ color: #000; background: #fff; }
+      .card, .figure-card{ border: 1px solid #000; background: #fff; box-shadow:none; }
+      a{ color:#000; text-decoration: underline; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- =========================================================
+       Header with Nav + Right Actions
+       ========================================================= -->
+  <header role="banner" aria-label="MMRRC global header">
+    <div class="wrap topbar">
+      <a class="brand" href="#" aria-label="MMRRC Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-title">MMRRC</span>
+      </a>
+
+      <!-- Left primary nav -->
+      <nav aria-label="Primary" role="navigation" class="nav-left" style="margin-left:auto">
+        <ul>
+          <li><a href="#about">ABOUT</a></li>
+          <li><a href="#orders">ORDERS</a></li>
+          <li><a href="#submissions">SUBMISSIONS</a></li>
+          <li><a href="#methods">METHODS</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right actions -->
+      <nav aria-label="Account" role="navigation" class="nav-right">
+        <ul>
+          <!-- TODO: Wire to real auth endpoints -->
+          <li><a class="secondary" href="#login">LOGIN/REGISTER</a></li>
+          <li><a id="open-contact" href="#contact" role="button" aria-haspopup="dialog" aria-controls="contact-modal">CONTACT</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Prominent Search -->
+    <div class="searchbar-wrap" role="search" aria-label="Site search">
+      <div class="wrap searchbar">
+        <label class="select" aria-label="Category">
+          <!-- TODO: Replace with real categories; name/id retained for wiring -->
+          <select id="search-category" name="category" aria-label="Select category">
+            <option selected>All categories</option>
+            <option>Models</option>
+            <option>Services</option>
+            <option>Protocols</option>
+          </select>
+        </label>
+        <div class="input">
+          <span aria-hidden="true">🔎</span>
+          <!-- TODO: Wire input to search endpoint and route -->
+          <input id="site-search" type="search" name="q" placeholder="Search MMRRC catalog, services, and resources" aria-label="Search MMRRC catalog, services, and resources">
+        </div>
+        <button id="search-btn" class="search-btn" type="button" aria-label="Search">
+          Search
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       Main
+       ========================================================= -->
+  <main id="main" class="wrap" role="main">
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-grid">
+        <div>
+          <span class="kicker"><span class="dot" aria-hidden="true"></span>NIH‑supported national repository</span>
+          <h1 id="hero-title">
+            Accelerate research with rigorously curated mouse models
+          </h1>
+          <p>
+            The Mutant Mouse Resource & Research Centers (MMRRC) archive, validate, and distribute scientifically valuable mouse lines, supporting reproducibility and the 3R’s.
+          </p>
+          <div class="cta-row" aria-label="Primary calls to action">
+            <!-- TODO: Replace href values with production endpoints if needed -->
+            <a id="order" class="btn btn-order" href="https://www.mmrrc.org/catalog/StrainCatalogSearchForm.php" aria-label="Order a Model">
+              Order a Model
+            </a>
+            <a id="submit" class="btn btn-submit" href="https://www.mmrrc.org/submission/strain_submission_terms.php" aria-label="Submit a Strain">
+              Submit a Strain
+            </a>
+            <a class="btn btn-secondary" href="nams.html" aria-label="Learn about NAMs">
+              Learn about NAMs
+            </a>
+          </div>
+        </div>
+        <figure class="figure-card" role="img" aria-label="Abstract background representing model organisms and data">
+          <figcaption>MMRRC: Validated resources, expertise, and quality controls</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Reduced-prominence NAM statement (collapsible by default) -->
+    <section id="nam-statement" class="feature" aria-labelledby="nam-title">
+      <details class="nam" aria-labelledby="nam-title">
+        <summary>
+          <span class="badge" aria-hidden="true">Announcement</span>
+          <span id="nam-title" style="margin-left:6px;">MMRRC Statement on NAMs</span>
+        </summary>
+        <div class="nam-card">
+          <div class="nam-body">
+            <p>
+              At the MMRRC, we’re committed to advancing biomedical research using the most appropriate model available, be that a mouse model or a New Alternative Methodology (NAM). The availability of well-characterized mutant mouse lines, all cryo-archived, saves investigators time, costs, and effort to remake a mouse strain de novo for their research. This dramatically contributes to the 3R’s goal of reducing animal use in research. The MMRRC is a scientifically valuable resource to validate the in vivo biological relevance and reproducibility of NAMs, providing the mice, expertise, and quality controls needed to test and confirm the ability to model the whole‑organism. The MMRRC assists the research community to develop and implement validated NAMs, ensuring accuracy and reproducibility while simultaneously reducing and replacing animals in research.
+            </p>
+            <p>
+              As scientists ourselves, our commonly shared goal is to enable responsible, high‑quality science that drives innovation using traditional and alternative research approaches.
+            </p>
+            <p class="learn-link">
+              <a href="nams.html" aria-label="Learn more about NAMs">Learn more</a>
+            </p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- Sales-forward category tiles -->
+    <section class="tiles" aria-labelledby="tiles-title">
+      <h2 id="tiles-title" class="kicker"><span class="dot" aria-hidden="true"></span>Get started</h2>
+      <div class="cards" role="list">
+        <article class="card" role="listitem" aria-labelledby="t1">
+          <div class="icon" aria-hidden="true">📚</div>
+          <h3 id="t1">Browse by Research Area</h3>
+          <p>Explore curated categories to quickly find models aligned with your domain.</p>
+          <!-- TODO: Wire to research area landing -->
+          <a class="more" href="#" aria-label="Browse by Research Area">Explore</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="t2">
+          <div class="icon" aria-hidden="true">⭐</div>
+          <h3 id="t2">Top Models</h3>
+          <p>See popular models frequently requested by investigators.</p>
+          <!-- TODO: Wire to top models listing -->
+          <a class="more" href="#" aria-label="View Top Models">View</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="t3">
+          <div class="icon" aria-hidden="true">🆕</div>
+          <h3 id="t3">New Arrivals</h3>
+          <p>Discover newly deposited or recently validated strains.</p>
+          <!-- TODO: Wire to new arrivals feed -->
+          <a class="more" href="#" aria-label="View New Arrivals">Discover</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="t4">
+          <div class="icon" aria-hidden="true">🛠️</div>
+          <h3 id="t4">Services</h3>
+          <p>Cryopreservation, rederivation, genotyping, and more.</p>
+          <!-- TODO: Wire to services overview -->
+          <a class="more" href="#" aria-label="View Services">Learn more</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Highlights retained (ordering/submission benefits) -->
+    <section class="highlights" aria-labelledby="highlights-title">
+      <h2 id="highlights-title" class="kicker"><span class="dot" aria-hidden="true"></span>How we help</h2>
+      <div class="cards" role="list">
+        <article class="card" role="listitem" aria-labelledby="h1">
+          <div class="icon" aria-hidden="true">✔</div>
+          <h3 id="h1">Curated, cryo‑archived mouse lines</h3>
+          <p>Save time and reduce duplication with well‑characterized, quality‑controlled strains, archived for reproducibility.</p>
+          <!-- TODO: Update link if needed -->
+          <a class="more" href="https://www.mmrrc.org/catalog/StrainCatalogSearchForm.php" aria-label="Browse catalog">Browse catalog</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="h2">
+          <div class="icon" aria-hidden="true">↺</div>
+          <h3 id="h2">Streamlined submission</h3>
+          <p>Deposit your model with guidance from experts. Preserve, distribute, and amplify impact across the community.</p>
+          <!-- TODO: Update link if needed -->
+          <a class="more" href="https://www.mmrrc.org/submission/strain_submission_terms.php" aria-label="Start a submission">Start a submission</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="h3">
+          <div class="icon" aria-hidden="true">🔎</div>
+          <h3 id="h3">Validating NAMs in vivo</h3>
+          <p>Use whole‑organism evidence to verify NAMs’ biological relevance and reproducibility.</p>
+          <a class="more" href="nams.html" aria-label="Learn how MMRRC supports NAMs">Learn how</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact Modal -->
+  <div id="contact-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="contact-title">
+    <div class="modal" role="document">
+      <header>
+        <h2 id="contact-title">Contact Us</h2>
+        <button type="button" class="close-btn" id="close-contact" aria-label="Close contact form">Close</button>
+      </header>
+      <div class="body">
+        <form id="contact-form">
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="institution">Institution</label>
+              <input id="institution" name="institution" type="text" autocomplete="organization">
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <div class="consent">
+            <input id="consent" name="consent" type="checkbox" required aria-describedby="consent-help">
+            <label for="consent">I consent to MMRRC processing this information to respond to my inquiry.</label>
+          </div>
+          <p id="consent-help" class="small">We only use your information to service this request.</p>
+          <!-- TODO: Wire submit to backend endpoint; replace preventDefault with real fetch() -->
+          <button class="submit-btn" type="submit">Send message</button>
+        </form>
+
+        <div class="contact-info small" aria-label="Contact information">
+          <p><strong>Email:</strong> support@mmrrc.org</p>
+          <p><strong>Phone:</strong> (000) 000-0000</p>
+          <p>We typically respond within 1–2 business days.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer role="contentinfo" aria-label="Site footer">
+    <div class="wrap footgrid">
+      <div>
+        <h2 id="about" class="kicker"><span class="dot" aria-hidden="true"></span>About</h2>
+        <p>
+          The MMRRC is the NIH‑supported national repository system for mutant mice. We archive and distribute scientifically valuable mouse models and provide resources that strengthen reproducibility and research rigor.
+        </p>
+      </div>
+      <div>
+        <h2 class="kicker"><span class="dot" aria-hidden="true"></span>Navigate</h2>
+        <ul class="small" aria-label="Footer navigation">
+          <!-- TODOs: If replacing links, keep labels and aria intact -->
+          <li><a href="https://www.mmrrc.org/catalog/StrainCatalogSearchForm.php" id="orders">Order a Model</a></li>
+          <li><a href="https://www.mmrrc.org/submission/strain_submission_terms.php" id="submissions">Submit a Strain</a></li>
+          <li><a href="nams.html" id="methods">NAMs Education</a></li>
+          <li><a href="#contact" id="contact-footer" aria-haspopup="dialog" aria-controls="contact-modal">Contact MMRRC</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap small" style="margin-top: var(--space); color:#6b7280;">
+      <p>&copy; <span id="year"></span> MMRRC. Supported by NIH ORIP. All rights reserved.</p>
+    </div>
+    <script>
+      // Footer year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Search wiring (placeholder)
+      // TODO: Replace with real navigation to search results (e.g., location.href = `/search?cat=${cat}&q=${q}`)
+      const searchBtn = document.getElementById('search-btn');
+      searchBtn && searchBtn.addEventListener('click', () => {
+        var catEl = document.getElementById('search-category');
+        var qEl = document.getElementById('site-search');
+        var cat = catEl && catEl.value !== undefined ? catEl.value : '';
+        var q = qEl && qEl.value !== undefined ? String(qEl.value).trim() : '';
+        if(!q){
+          qEl && qEl.focus && qEl.focus();
+          return;
+        }
+        console.log('TODO: submit search', { category: cat, query: q });
+        alert('Search submitted (placeholder). TODO: wire to real search endpoint.');
+      });
+
+      // Contact modal (accessible): open/close, trap focus, esc to close
+      var modal = document.getElementById('contact-modal');
+      var opener1 = document.getElementById('open-contact');
+      var opener2 = document.getElementById('contact-footer');
+      var openers = [opener1, opener2].filter(function(n){ return !!n; });
+      var closeBtn = document.getElementById('close-contact');
+      var lastFocused = null;
+
+      function setHidden(hidden){
+        if(!modal) return;
+        modal.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+        document.body.style.overflow = hidden ? '' : 'hidden';
+      }
+      function focusableElements(root){
+        return Array.prototype.slice.call(root.querySelectorAll(
+          'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        )).filter(function(el){ return !el.hasAttribute('disabled') && el.tabIndex >= 0; });
+      }
+      function openModal(){
+        if(!modal) return;
+        lastFocused = document.activeElement && document.activeElement.focus ? document.activeElement : null;
+        setHidden(false);
+        var elems = focusableElements(modal);
+        if(elems.length && elems[0].focus) elems[0].focus();
+        window.addEventListener('keydown', trap);
+      }
+      function closeModal(){
+        setHidden(true);
+        window.removeEventListener('keydown', trap);
+        if(lastFocused && lastFocused.focus) lastFocused.focus();
+      }
+      function trap(e){
+        if(!modal) return;
+        if(e.key === 'Escape'){ e.preventDefault(); closeModal(); return; }
+        if(e.key !== 'Tab') return;
+        var elems = focusableElements(modal);
+        if(!elems.length) return;
+        var first = elems[0], last = elems[elems.length - 1];
+        if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+        else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      }
+      openers.forEach(function(op){ op && op.addEventListener('click', function(e){ e.preventDefault(); openModal(); }); });
+      closeBtn && closeBtn.addEventListener('click', function(){ closeModal(); });
+      modal && modal.addEventListener('click', function(e){
+        if(e.target === modal){ closeModal(); }
+      });
+
+      // Contact form submit placeholder
+      var form = document.getElementById('contact-form');
+      form && form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var data = new FormData(form);
+        // TODO: Replace with real POST to contact endpoint
+        console.log('TODO: submit contact', Object.fromEntries(data.entries()));
+        alert('Message sent (placeholder). TODO: wire to real contact endpoint.');
+        closeModal();
+      });
+    </script>
+  </footer>
+</body>
+</html>

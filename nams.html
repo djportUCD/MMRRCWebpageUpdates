@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NAMs Education | MMRRC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Educational resource explaining New Alternative Methodologies (NAMs) through a whole‑organism lens: Why a Whole Model for NAMs?, Verification, Validation, and MMRRC Models for NAMs.">
+  <style>
+    /* =========================================================
+       NAMs Education Page
+       - Sticky in-page nav
+       - Pure HTML/CSS, minimal JS only for year stamp
+       - Responsive, print-friendly, accessible
+       ========================================================= */
+    :root{
+      --bg: #0b1021;
+      --panel: #0f172a;
+      --text: #e5e7eb;
+      --muted: #cbd5e1;
+      --brand: #22d3ee;
+      --brand-700: #0891b2;
+      --accent: #a78bfa;
+      --line: rgba(148,163,184,.2);
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --space: clamp(14px, 2vw, 22px);
+      --space-lg: clamp(22px, 4vw, 54px);
+      --space-xl: clamp(32px, 8vw, 96px);
+      --maxw: 1100px;
+      --step--1: clamp(12px, .85rem + .2vw, 14px);
+      --step-0: clamp(14px, .95rem + .3vw, 16px);
+      --step-1: clamp(18px, 1.05rem + .5vw, 20px);
+      --step-2: clamp(22px, 1.2rem + .8vw, 26px);
+      --step-3: clamp(28px, 1.4rem + 1.2vw, 34px);
+      --step-4: clamp(34px, 1.6rem + 1.8vw, 44px);
+    }
+    *{ box-sizing: border-box; }
+    html:focus-within{ scroll-behavior: smooth; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 80% -10%, #1e293b 0%, #0b1021 45%, #050814 100%);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: var(--step-0);
+    }
+    a{ color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+    :focus{ outline: none; }
+    :focus-visible{ outline: 3px solid var(--brand-700); outline-offset: 3px; border-radius: 6px; }
+
+    /* Skip link */
+    .skip-link{
+      position: absolute; left: -999px; top: -999px;
+    }
+    .skip-link:focus{
+      left: 12px; top: 12px; background: #fff; color: #000;
+      padding: 10px 14px; border-radius: 6px; box-shadow: var(--shadow); z-index: 9999;
+      text-decoration: none;
+    }
+
+    .wrap{ width: min(100% - 2rem, var(--maxw)); margin-inline: auto; }
+
+    /* Header */
+    header{
+      position: sticky; top: 0; z-index: 40;
+      background: linear-gradient(180deg, rgba(5,8,20,.85), rgba(5,8,20,.5));
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap: 8px;
+      padding: .6rem 0;
+    }
+    .brand{
+      display:flex; gap:.8rem; align-items:center; color: var(--text); text-decoration:none;
+    }
+    .dot{ width: 10px; height: 10px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 4px rgba(34,211,238,.15); }
+    nav[aria-label="Breadcrumb"] a{ text-decoration: none; color: var(--text); }
+    nav[aria-label="Breadcrumb"] a:hover{ text-decoration: underline; }
+
+    /* Mast */
+    .mast{
+      padding: var(--space-lg) 0 var(--space);
+    }
+    .mast h1{
+      font-size: var(--step-4); line-height:1.1; margin:.2em 0 .2em;
+      background: linear-gradient(180deg, #fff, #c7e9ff 70%, #91c5ff 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-wrap: balance;
+    }
+    .mast p{ color: var(--muted); font-size: var(--step-1); max-width: 80ch; }
+
+    /* Sticky in-page nav */
+    .toc{
+      position: sticky; top: 62px; z-index: 30;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+    }
+    .toc ul{ margin: 0; padding: 0; list-style: none; display:flex; flex-wrap: wrap; gap: 8px; }
+    .toc a{
+      display:inline-block; padding: 8px 12px; border-radius: 10px; text-decoration: none; color: var(--text);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    }
+    .toc a:hover{ background: rgba(148,163,184,.08); }
+
+    /* Sections */
+    section{ padding: var(--space-lg) 0; border-bottom: 1px dashed var(--line); }
+    section:last-of-type{ border-bottom: none; padding-bottom: var(--space-xl); }
+
+    .lead{
+      font-size: var(--step-1);
+      color: #dbeafe;
+      margin: .3em 0 1em;
+      max-width: 75ch;
+    }
+
+    /* Content blocks */
+    .grid-2{
+      display:grid; gap: var(--space);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px){
+      .grid-2{ grid-template-columns: 1.1fr .9fr; align-items: start; }
+    }
+
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding: clamp(16px, 3vw, 26px);
+      box-shadow: var(--shadow);
+    }
+    .panel h3{ margin-top: 0; }
+    .muted{ color: var(--muted); }
+
+    /* Cards / Accordions (CSS-only details/summary) */
+    .cards{
+      display:grid; gap: var(--space);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 760px){
+      .cards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    details{
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding: 10px 14px;
+    }
+    summary{
+      cursor: pointer; font-weight: 700;
+      list-style: none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    details[open]{ box-shadow: var(--shadow); }
+
+    /* Placeholder figures */
+    .figure{
+      border-radius: 12px; border: 1px solid var(--line);
+      min-height: 200px; display:flex; align-items:center; justify-content:center;
+      background:
+        radial-gradient(500px 240px at 80% -10%, rgba(34,211,238,.18), transparent 60%),
+        radial-gradient(500px 240px at -20% 120%, rgba(167,139,250,.18), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      position: relative; overflow:hidden;
+    }
+    .figure::after{
+      content:"";
+      position:absolute; inset:0;
+      background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 2px, transparent 2px 10px);
+      mix-blend-mode: overlay; pointer-events:none;
+    }
+    .figure figcaption{
+      position:absolute; bottom: 10px; left: 12px;
+      font-size: var(--step--1); color: #dbeafe;
+      background: rgba(2,6,23,.6);
+      padding: 6px 10px; border-radius: 8px;
+      border: 1px solid rgba(148,163,184,.2);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid var(--line);
+      background: #070b1a;
+      color: var(--muted);
+      padding: var(--space-lg) 0;
+    }
+
+    /* Print */
+    @media print{
+      header, .toc{ display:none !important; }
+      body{ background:#fff; color:#000; }
+      .panel, details, .figure{ border: 1px solid #000; background:#fff; box-shadow:none; }
+      a{ color:#000; text-decoration: underline; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- Header / Breadcrumb -->
+  <header role="banner" aria-label="MMRRC NAMs header">
+    <div class="wrap top">
+      <a class="brand" href="mmrrc.html"><span class="dot" aria-hidden="true"></span> <strong>MMRRC</strong></a>
+      <nav aria-label="Breadcrumb">
+        <a href="mmrrc.html">Home</a> › <span aria-current="page">NAMs Education</span>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Intro -->
+  <div class="wrap mast" role="region" aria-label="Intro">
+    <h1>NAMs through a Whole‑Organism Lens</h1>
+    <p>
+      New Alternative Methodologies (NAMs) advance research by reducing and replacing animal use where feasible. This guide explains where whole model organisms complement NAMs, and how verification and validation build confidence in translational relevance.
+    </p>
+  </div>
+
+  <!-- Sticky in-page nav -->
+  <div class="wrap toc" role="navigation" aria-label="In‑page navigation">
+    <ul>
+      <li><a href="#why">Why a Whole Model for NAMs?</a></li>
+      <li><a href="#verification">Verification of NAMs</a></li>
+      <li><a href="#validation">Validation of NAMs</a></li>
+      <li><a href="#models">MMRRC Models for NAMs</a></li>
+    </ul>
+  </div>
+
+  <main id="main" class="wrap" role="main">
+
+    <!-- =======================================================
+         1) Why a Whole Model for NAMs?
+         ======================================================= -->
+    <section id="why" aria-labelledby="why-title">
+      <h2 id="why-title">Why a Whole Model for NAMs?</h2>
+      <p class="lead">
+        NAMs excel at dissecting mechanisms in defined systems. Whole‑organism models supply integrated physiology, complex interplay among tissues, lifespan effects, and emergent properties not accessible in isolation.
+      </p>
+      <div class="grid-2">
+        <article class="panel" aria-label="Key considerations">
+          <h3>Context, Complexity, and Translation</h3>
+          <ul class="muted">
+            <li>Systemic interactions and homeostasis under real biological constraints</li>
+            <li>Developmental timing, aging, sex, and genetic background effects</li>
+            <li>Pharmacokinetics and pharmacodynamics in vivo</li>
+            <li>Pathway cross‑talk, compensatory mechanisms, and pleiotropy</li>
+          </ul>
+        </article>
+        <figure class="figure" role="img" aria-label="Placeholder conceptual graphic of organism-level view">
+          <!-- Placeholder figure: no external asset -->
+          <figcaption>Organism‑level integration complements reductionist NAM insights</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         2) Verification of NAMs
+         ======================================================= -->
+    <section id="verification" aria-labelledby="ver-title">
+      <h2 id="ver-title">Verification of NAMs</h2>
+      <p class="lead">
+        Verification asks: does a NAM measure what it claims under defined conditions? This emphasizes internal consistency, technical performance, and fit‑for‑purpose criteria.
+      </p>
+      <div class="cards" role="list">
+        <details role="listitem">
+          <summary>Assay fidelity and controls</summary>
+          <div class="muted">
+            Ensure well‑characterized controls, dynamic range, sensitivity, specificity, and repeatability within the NAM.
+          </div>
+        </details>
+        <details role="listitem">
+          <summary>Reference materials and benchmarks</summary>
+          <div class="muted">
+            Use reference standards and benchmark datasets to establish expected behavior and detect drift.
+          </div>
+        </details>
+        <details role="listitem">
+          <summary>Data quality and provenance</summary>
+          <div class="muted">
+            Document sample handling, instrument settings, pipelines, and QC metrics to support robust interpretation.
+          </div>
+        </details>
+        <details role="listitem">
+          <summary>Fit‑for‑purpose criteria</summary>
+          <div class="muted">
+            Align NAM outputs with the decision context (screening vs. definitive testing) and define acceptance thresholds.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         3) Validation of NAMs
+         ======================================================= -->
+    <section id="validation" aria-labelledby="val-title">
+      <h2 id="val-title">Validation of NAMs</h2>
+      <p class="lead">
+        Validation evaluates whether a NAM’s outputs generalize and predict biological outcomes beyond initial test sets — including in vivo reference points when appropriate.
+      </p>
+      <div class="grid-2">
+        <article class="panel" aria-label="Comparative & predictive validation">
+          <h3>Comparative and Predictive Evidence</h3>
+          <ul class="muted">
+            <li>Cross‑model concordance: NAM vs. orthogonal NAMs and in vivo endpoints</li>
+            <li>Robustness across labs, batches, and biological diversity</li>
+            <li>Prospective prediction on blinded or out‑of‑distribution samples</li>
+            <li>Uncertainty quantification and error analysis</li>
+          </ul>
+        </article>
+        <article class="panel" aria-label="Role of whole models">
+          <h3>The Role of Whole Models</h3>
+          <p class="muted">
+            Organism‑level results provide ground truth for complex phenotypes, validating the translational relevance of NAMs where systemic interactions matter.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         4) MMRRC Models for NAMs
+         ======================================================= -->
+    <section id="models" aria-labelledby="models-title">
+      <h2 id="models-title">MMRRC Models for NAMs</h2>
+      <p class="lead">
+        The MMRRC provides curated, cryo‑archived mouse lines and expertise to verify and validate NAMs where whole‑organism endpoints are needed.
+      </p>
+
+      <!-- Example content scaffolding for cards and future content -->
+      <div class="grid-2">
+        <article class="panel" aria-label="Model categories">
+          <h3>Model Categories (Examples)</h3>
+          <ul class="muted">
+            <li>Disease‑area specific models (e.g., neurodegeneration, metabolic)</li>
+            <li>Reporter and conditional lines</li>
+            <li>Controls and background references</li>
+            <li>Tool strains for pathway interrogation</li>
+          </ul>
+          <!-- TODO: Replace # with destination URLs when ready -->
+          <p><a href="https://www.mmrrc.org/catalog/StrainCatalogSearchForm.php">Browse catalog</a></p>
+        </article>
+
+        <figure class="figure" role="img" aria-label="Placeholder grid of cards for models">
+          <figcaption>Structure ready for curated examples and images</figcaption>
+        </figure>
+      </div>
+
+      <!-- CSS-only accordions for additional guidance -->
+      <div class="cards" role="list" style="margin-top: var(--space);">
+        <details role="listitem">
+          <summary>Best practices for integrating NAMs with whole‑organism data</summary>
+          <div class="muted">
+            Define hypotheses spanning reductionist and organismal levels, align endpoints, and pre‑register criteria for concordance and divergence.
+          </div>
+        </details>
+        <details role="listitem">
+          <summary>Quality and reporting</summary>
+          <div class="muted">
+            Provide complete metadata (genetic background, housing, age/sex, health status) and document assay protocols to support reproducibility.
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo" aria-label="Page footer">
+    <div class="wrap">
+      <p class="muted">
+        Return to <a href="mmrrc.html">MMRRC Home</a>. &copy; <span id="year"></span> MMRRC. Supported by NIH ORIP.
+      </p>
+    </div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+</body>
+</html>
