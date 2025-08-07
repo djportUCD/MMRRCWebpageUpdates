@@ -110,9 +110,8 @@
       display:flex; align-items:center; gap:.8rem; text-decoration:none;
     }
     .brand-mark{
-      width: 40px; height: 40px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--teal), #27c3cf);
-      box-shadow: inset 0 0 0 2px rgba(0,0,0,.06), var(--shadow);
+      height: 40px; width: auto;
+      object-fit: contain;
     }
     .brand-title{
       font-weight: 800; letter-spacing:.2px; font-size: var(--step-1);
@@ -216,18 +215,14 @@
       background: #fff; color: var(--text); border: 1px solid var(--border);
     }
 
-    /* Figure placeholder */
-    .figure-card{
-      border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border);
-      background: linear-gradient(180deg, #ffffff, #f9fafb);
-      min-height: 260px; display:flex; align-items:center; justify-content:center; box-shadow: var(--shadow);
-      position: relative;
-    }
-    .figure-card figcaption{
-      position:absolute; bottom: 10px; left: 12px;
-      font-size: var(--step--1); color: #0b1220; background: rgba(255,255,255,.9);
-      padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border);
-      -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    /* Hero image */
+    .hero-image{
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      max-height: 400px;
     }
 
     /* Collapsible NAM highlight (reduced prominence) */
@@ -341,7 +336,7 @@
   <header role="banner" aria-label="MMRRC global header">
     <div class="wrap topbar">
       <a class="brand" href="#" aria-label="MMRRC Home">
-        <span class="brand-mark" aria-hidden="true"></span>
+        <img class="brand-mark" src="https://www.mmrrc.org/images/MMRRC_NIH_logo_web2.png" alt="MMRRC and NIH logos">
         <span class="brand-title">MMRRC</span>
       </a>
 
@@ -418,9 +413,7 @@
             </a>
           </div>
         </div>
-        <figure class="figure-card" role="img" aria-label="Abstract background representing model organisms and data">
-          <figcaption>MMRRC: Validated resources, expertise, and quality controls</figcaption>
-        </figure>
+        <img class="hero-image" src="https://www.mmrrc.org/images/IMG8.jpg" alt="Two laboratory mice held in a gloved hand.">
       </div>
     </section>
 
@@ -551,6 +544,66 @@
         </article>
       </div>
     </section>
+
+    <!-- News -->
+    <section class="highlights" aria-labelledby="news-title">
+      <h2 id="news-title" class="kicker"><span class="dot" aria-hidden="true"></span>News & Updates</h2>
+      <div class="cards" role="list">
+        <article class="card" role="listitem" aria-labelledby="n1">
+          <div class="icon" aria-hidden="true">📰</div>
+          <h3 id="n1">New SQC Reporting System</h3>
+          <p>Our new Strain Quality Control (SQC) reporting system makes it easier to assess strain information.</p>
+          <!-- TODO: Wire to news article -->
+          <a class="more" href="#" aria-label="Read about the new SQC reporting system">Read more</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="n2">
+          <div class="icon" aria-hidden="true">🧬</div>
+          <h3 id="n2">Disease Ontology Search</h3>
+          <p>Find models using standardized disease terms, making it easier to discover models for human diseases.</p>
+          <!-- TODO: Wire to news article -->
+          <a class="more" href="#" aria-label="Read about the Disease Ontology search feature">Read more</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="n3">
+          <div class="icon" aria-hidden="true">銅</div>
+          <h3 id="n3">Copper Therapy & Parkinson’s</h3>
+          <p>A copper-delivery drug has successfully refolded damaged brain proteins in mouse models of Parkinson's.</p>
+          <!-- TODO: Wire to news article -->
+          <a class="more" href="#" aria-label="Read about Copper Therapy and Parkinson’s">Read more</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- News -->
+    <section class="highlights" aria-labelledby="news-title">
+      <h2 id="news-title" class="kicker"><span class="dot" aria-hidden="true"></span>News & Updates</h2>
+      <div class="cards" role="list">
+        <article class="card" role="listitem" aria-labelledby="n1">
+          <div class="icon" aria-hidden="true">📰</div>
+          <h3 id="n1">New SQC Reporting System</h3>
+          <p>Our new Strain Quality Control (SQC) reporting system makes it easier to assess strain information.</p>
+          <!-- TODO: Wire to news article -->
+          <a class="more" href="#" aria-label="Read about the new SQC reporting system">Read more</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="n2">
+          <div class="icon" aria-hidden="true">🧬</div>
+          <h3 id="n2">Disease Ontology Search</h3>
+          <p>Find models using standardized disease terms, making it easier to discover models for human diseases.</p>
+          <!-- TODO: Wire to news article -->
+          <a class="more" href="#" aria-label="Read about the Disease Ontology search feature">Read more</a>
+        </article>
+
+        <article class="card" role="listitem" aria-labelledby="n3">
+          <div class="icon" aria-hidden="true">💡</div>
+          <h3 id="n3">Copper Therapy & Parkinson’s</h3>
+          <p>A copper-delivery drug has successfully refolded damaged brain proteins in mouse models of Parkinson's.</p>
+          <!-- TODO: Wire to news article -->
+          <a class="more" href="#" aria-label="Read about Copper Therapy and Parkinson’s">Read more</a>
+        </article>
+      </div>
+    </section>
   </main>
 
   <!-- Contact Modal -->
@@ -618,8 +671,12 @@
         </ul>
       </div>
     </div>
-    <div class="wrap small" style="margin-top: var(--space); color:#6b7280;">
-      <p>&copy; <span id="year"></span> MMRRC. Supported by NIH ORIP. All rights reserved.</p>
+    <div class="wrap small" style="margin-top: var(--space); color:#6b7280; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+      <p style="margin:0;">&copy; <span id="year"></span> MMRRC. All rights reserved.</p>
+      <div style="display:flex; align-items:center; gap:.8rem;">
+        <span>Supported by</span>
+        <img src="https://www.mmrrc.org/images/MMRRC_NIH_logo_web2.png" alt="NIH ORIP Logo" style="height:32px; width:auto;">
+      </div>
     </div>
     <script>
       // Footer year
